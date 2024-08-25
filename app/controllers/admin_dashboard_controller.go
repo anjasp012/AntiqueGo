@@ -217,7 +217,7 @@ func (s *Server) CreateProduct(w http.ResponseWriter, r *http.Request) {
 
 	name := r.FormValue("name")
 	description := r.FormValue("description")
-	shortDescription := r.FormValue("shortDescription")
+	shortDescription := r.FormValue("short-description")
 	price, _ := decimal.NewFromString(r.FormValue("price"))
 	stock, _ := strconv.Atoi(r.FormValue("stock"))
 

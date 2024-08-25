@@ -11,4 +11,5 @@ type ProductImage struct {
 	Path       string `gorm:"type:text"`
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
+	
 }

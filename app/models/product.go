@@ -20,6 +20,7 @@ type Product struct {
 	Name             string          `gorm:"size:255"`
 	Slug             string          `gorm:"size:255"`
 	Price            decimal.Decimal `gorm:"type:decimal(16,2);"`
+	FormattedPrice string `gorm:"-"`
 	Stock            int
 	Weight           decimal.Decimal `gorm:"type:decimal(10,2);"`
 	ShortDescription string          `gorm:"type:text"`
@@ -37,6 +38,7 @@ type ProductWithImage struct {
 	Stock       int
 	Slug 		string
 	ImagePath   string
+	FormattedPrice string `gorm:"-"`
 }
 
 
@@ -108,6 +110,7 @@ func (p *Product) FindByID(db *gorm.DB, productID string) (*Product, error) {
 	}
 	return &product, err
 }
+
 
 func (p *Product) SearchProducts(db *gorm.DB, searchQuery string, perPage, page int) ([]Product, int64, error) {
 	var products []Product

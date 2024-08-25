@@ -103,9 +103,9 @@ func (s *Server) Initialize(appConfig AppConfig, dbConfig DBConfig) {
 
 func (s *Server) InitializeDb(dbConfig DBConfig) {
 	var err error
-	// dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta",
-	// 	dbConfig.DBHost, dbConfig.DBUser, dbConfig.DBPassword, dbConfig.DBName, dbConfig.DBPort)
-	dsn:=fmt.Sprintf(dbConfig.POSTGRES_URL)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta",
+		dbConfig.DBHost, dbConfig.DBUser, dbConfig.DBPassword, dbConfig.DBName, dbConfig.DBPort)
+	// dsn:=fmt.Sprintf(dbConfig.POSTGRES_URL)
 	s.DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		fmt.Println(err.Error())

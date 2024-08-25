@@ -1,14 +1,36 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"AntiqueGo/app/models"
 
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 )
+
+func formatRupiah(amount float64) string {
+    intAmount := int(amount) // Konversi float64 ke int
+    strAmount := fmt.Sprintf("%d", intAmount)
+    n := len(strAmount)
+    if n <= 3 {
+        return "Rp " + strAmount
+    }
+
+    var result strings.Builder
+    for i := 0; i < n; i++ {
+        if (n-i)%3 == 0 && i != 0 {
+            result.WriteString(".")
+        }
+        result.WriteByte(strAmount[i])
+    }
+
+    return "Rp " + result.String()
+}
+
 
 func (s *Server) Products(w http.ResponseWriter,r *http.Request) {
 	render:= render.New(render.Options{
@@ -25,6 +47,7 @@ func (s *Server) Products(w http.ResponseWriter,r *http.Request) {
 	perPage := 9
 
 	searchQuery := q.Get("search")
+	
 
 	if searchQuery != "" {
         productModel := models.Product{}
@@ -32,6 +55,11 @@ func (s *Server) Products(w http.ResponseWriter,r *http.Request) {
 		if err!= nil {
             return 
         }
+
+		for i := range products {
+			priceFloat, _ := products[i].Price.Float64() // Mengonversi decimal.Decimal ke float64
+			products[i].FormattedPrice = formatRupiah(priceFloat)
+		}
 		
 
 		pagination,_:=GetPaginationLinks(s.AppConfig, PaginationParams{
@@ -60,7 +88,10 @@ func (s *Server) Products(w http.ResponseWriter,r *http.Request) {
             return 
         }
 
-		
+		for i := range products {
+			priceFloat, _ := products[i].Price.Float64() // Mengonversi decimal.Decimal ke float64
+			products[i].FormattedPrice = formatRupiah(priceFloat)
+		}
 		
 		
 		pagination,_:=GetPaginationLinks(s.AppConfig, PaginationParams{
